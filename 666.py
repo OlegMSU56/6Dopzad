@@ -28,7 +28,6 @@ class Figure:
             self.__color = [r, g, b]
 
     def __is_valid_sides(self, *sides):
-        #cond_1 = len(self.__sides) == len(sides)
         if isinstance(self, Cube):
             cond_1 = len(sides) == 1
         else:
@@ -71,9 +70,13 @@ class Triangle(Figure):
         self.__height = (2*self.get_square())/(self.__len__()/2)
 
     def get_square(self):
-        p = self.__len__()/2 #полупериметр
-        s = math.sqrt(p*(p-self.sides)*(p-self.sides)*(p-self.sides))#формула герона
+        p =  sum(self.get_sides()) / 2 #полупериметр
+        s = math.sqrt(p*(p-self.get_sides()[0])*(p-self.get_sides()[0])*(p-self.get_sides()[0]))#формула герона
         return s
+    def __calculate__height(self):
+        p = sum(self.get_sides()) / 2
+        return ((2 * math.sqrt(p * (p - self.get_sides()[0]) * (p - self.get_sides()[1]) * (p - self.get_sides()[2]))) /
+                self.get_sides()[0])
 
 
 class Cube(Figure):
@@ -83,26 +86,23 @@ class Cube(Figure):
         super().__init__(color, sides)
 
     def get_volume(self):
-        v = self.sides**3
+        v = self.get_sides()[0] ** 3
         return v
 
 
-
-
-
-circle1 = Circle((200, 200, 100), 10) # (Цвет, стороны)
+circle1 = Circle((200, 200, 100), 10)  # (Цвет, стороны)
 cube1 = Cube((222, 35, 130), 6)
 
 # Проверка на изменение цветов:
-circle1.set_color(55, 66, 77) # Изменится
+circle1.set_color(55, 66, 77)  # Изменится
 print(circle1.get_color())
-cube1.set_color(300, 70, 15) # Не изменится
+cube1.set_color(300, 70, 15)  # Не изменится
 print(cube1.get_color())
 
 # Проверка на изменение сторон:
-cube1.set_sides(5, 3, 12, 4, 5) # Не изменится
+cube1.set_sides(5, 3, 12, 4, 5)  # Не изменится
 print(cube1.get_sides())
-circle1.set_sides(15) # Изменится
+circle1.set_sides(15)  # Изменится
 print(circle1.get_sides())
 
 # Проверка периметра (круга), это и есть длина:
@@ -110,6 +110,7 @@ print(len(circle1))
 
 # Проверка объёма (куба):
 print(cube1.get_volume())
+
 
 
 
